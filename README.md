@@ -5,6 +5,7 @@ This extension will create a DNS tunnel between two Burp Suite instances.  One i
 
 ### Usage
 _[1] Receiving Burp instance_
+
 _[2] Sending Burp instance_
 
 1) [1] Click "Start listening"
