@@ -4,16 +4,16 @@ A DNS tunnel utilizing the Burp Collaborator.
 This extension will create a DNS tunnel between two Burp Suite instances.  One instance will listen on its Burp Collaborator server and the other will tunnel data through that DNS server.
 
 ### Usage
-_[1] Receiving Burp instance_
+_[R] Receiving Burp instance_
 
-_[2] Sending Burp instance_
+_[S] Sending Burp instance_
 
-1) [1] Click "Start listening"
-2) [1] Copy the printed location of the Burp Collaborator server
-3) [2] Enter the address from (2) in the "Burp Collaborator Address" text box
-4) [2] Paste data to be tunneled in the "Data to tunnel" text box
-5) [2] Click "Tunnel Data"
-6) [1] After tunneling is completed click "Poll now"
+1) [R] Click "Start listening"
+2) [R] Copy the printed location of the Burp Collaborator server
+3) [S] Enter the address from (2) in the "Burp Collaborator Address" text box
+4) [S] Paste data to be tunneled in the "Data to tunnel" text box
+5) [S] Click "Tunnel Data"
+6) [R] After tunneling is completed click "Poll now"
 
 Check the "Verbose" box for debugging information to see any errors in sending/receiving data.
 
