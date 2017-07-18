@@ -10,7 +10,7 @@ _[2] Sending Burp instance_
 
 1) [1] Click "Start listening"
 2) [1] Copy the printed location of the Burp Collaborator server
-3) [2] Enter the address in the "Burp Collaborator Address" text box
+3) [2] Enter the address from (2) in the "Burp Collaborator Address" text box
 4) [2] Paste data to be tunneled in the "Data to tunnel" text box
 5) [2] Click "Tunnel Data"
 6) [1] After tunneling is completed click "Poll now"
