@@ -44,7 +44,7 @@ public class BurpExtender implements IBurpExtender, ITab
     private final JButton startCollabButton = new JButton("Start listening");
     private final JButton pollCollabButton = new JButton("Poll now");
     private final JButton clearReceiveButton = new JButton("Clear");
-    
+
     //Log to the receiveTextArea is verbosity is set to true
     class DNSLogger {
         public void log(String text) {
@@ -53,19 +53,21 @@ public class BurpExtender implements IBurpExtender, ITab
             }
         }
     }
-    
+
     //Listener for when the "Start listening" button is clicked
     class StartCollabButtonListener implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent ae) {
+            //Clear any existing data from the pollHash
+            pollHash = new HashMap<Integer, String>();
             collabContext = callbacks.createBurpCollaboratorClientContext();
             String payload = collabContext.generatePayload(true);
             burpCollabServerLocation = payload;
             receiveTextArea.setText("Send tunneled data to: " + payload+"\n");
         }
     }
-    
+
     //Listener for when the "Poll now" button is clicked
     class PollNowButtonListener implements ActionListener {
 
@@ -81,18 +83,18 @@ public class BurpExtender implements IBurpExtender, ITab
                 //Get interaction
                 IBurpCollaboratorInteraction interaction = interactions.get(i);
                 Map<String, String> properties = interaction.getProperties();
-                
+
                 //Verify interaction is a DNS Address Record (A) query
                 if (properties.get("type").equals("DNS") && properties.get("query_type").equals("A")) {
-                    
+
                     //Burp base64 encodes the raw queries
                     byte[] outputBytes = null;
                     outputBytes = helpers.base64Decode(properties.get("raw_query"));
-                    
+
                     //Parse the raw data and get an array of subdomains
                     DNSRequestParser parser = new DNSRequestParser();
                     List<String> outputParser = parser.parseRequestForDomain(outputBytes);
-                    
+
                     //Look for our dnsFlag as the first subdomain and our amountFlag as the second,
                     // this will tell us how much data to expect
                     if (outputParser.get(0).equals(dnsFlag) && outputParser.get(1).equals(amountFlag)) {
@@ -104,9 +106,9 @@ public class BurpExtender implements IBurpExtender, ITab
                         logger.log("Chunk " + outputParser.get(2) + " received: " + outputParser.get(1));
                         pollHash.put(Integer.parseInt(outputParser.get(2)), outputParser.get(1));
                     }
-                } 
+                }
             }
-            
+
             //Concatenate and base32 decode the tunnel data we've received
             String outputDecode = "";
             outputDecode = pollHash.values().stream().map((value) -> value).reduce(outputDecode, String::concat);
@@ -115,7 +117,7 @@ public class BurpExtender implements IBurpExtender, ITab
             } catch (Base32.DecodingException ex) {
                 logger.log("Chunks missing, please tunnel data again");
             }
-            
+
             //Output data about any missing chunks
             if (pollHash.size() != tunnelSize && tunnelSize>0) {
                 logger.log("Missing " + (pollHash.size() - tunnelSize) + " chunks");
@@ -124,10 +126,10 @@ public class BurpExtender implements IBurpExtender, ITab
             } else {
                 logger.log(pollHash.size() +" chunks received.  All chunks received.");
             }
-            receiveTextArea.append("----Data----\n\n"+outputDecode+"\n------------\n");
+            receiveTextArea.append("----Data----\n\n"+outputDecode+"------------\n");
         }
     }
-    
+
     //Listener for when the "Tunnel data" button is clicked
     class TunnelDataButtonListener implements ActionListener {
         @Override
@@ -141,7 +143,7 @@ public class BurpExtender implements IBurpExtender, ITab
             }
         }
     }
-    
+
     //Listener for when the "Tunnel data" button is clicked
     class ClearReceiveButtonListener implements ActionListener {
         @Override
@@ -154,7 +156,7 @@ public class BurpExtender implements IBurpExtender, ITab
             }
         }
     }
-    
+
     //Parse a raw DNS A name request
     //Header will be in the format of
     //12 bytes of headers
@@ -193,7 +195,7 @@ public class BurpExtender implements IBurpExtender, ITab
             return outputList;
         }
     }
-    
+
     //Class for tunneling data through DNS.
     class DataTunneler {
         String burpCollabAddress = "";
@@ -201,7 +203,7 @@ public class BurpExtender implements IBurpExtender, ITab
         public DataTunneler(String burpCollabAddress, String tunnelData) {
             this.burpCollabAddress = burpCollabAddress;
             this.tunnelData = "";
-            
+
             //Base32 encode our data before storing, as it is pulled directly from here,
             // when being sent.
             try {
@@ -213,20 +215,20 @@ public class BurpExtender implements IBurpExtender, ITab
                 receiveTextArea.setText("Make sure there is a valid collab address and data to tunnel");
             }
         }
-        
+
         //Tunnel data through DNS A name lookups, in equal sized chunks
         public void tunnelData() throws UnknownHostException {
             //TODO: Check length of collabhost to make sure we aren't exceeding 255.
             int splitLength = 63;
             List<String> splitData = splitEqually(this.tunnelData, splitLength);
             InetAddress.getAllByName(this.burpCollabAddress);
-            
+
             //Had previous issues with caching, I don't think this fixed it though.
             java.security.Security.setProperty("networkaddress.cache.ttl" , "0");
-            
+
             //Let the tunnel know the amount of data we are going to send
             InetAddress.getAllByName(dnsFlag+"."+amountFlag+"."+splitData.size()+"."+this.burpCollabAddress);
-            
+
             //Thread so we don't hold anything up
             //TODO: Add multiple threads
             Runnable r = () -> {
@@ -242,7 +244,7 @@ public class BurpExtender implements IBurpExtender, ITab
             };
             new Thread(r).start();
         }
-        
+
         //Split a string into equal sizes
         private List<String> splitEqually(String text, int size) {
             List<String> ret = new ArrayList<String>((text.length() + size - 1) / size);
@@ -252,32 +254,32 @@ public class BurpExtender implements IBurpExtender, ITab
             return ret;
         }
     }
-    
+
     @Override
     public void registerExtenderCallbacks(final IBurpExtenderCallbacks callbacks)
     {
         // keep a reference to our callbacks object
         this.callbacks = callbacks;
-        
+
         // obtain an extension helpers object
         helpers = callbacks.getHelpers();
         // set our extension name
         callbacks.setExtensionName("DNS Tunnel");
-        
+
         // create our UI
-        SwingUtilities.invokeLater(new Runnable() 
+        SwingUtilities.invokeLater(new Runnable()
         {
             @Override
             public void run()
             {
                 //Main split pane
                 mainPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
-                        
+
                 //Starting tunnel pane
                 //Wrapper for collab address and title
                 JPanel collabAddressWrapper = new JPanel(new BorderLayout());
-                collabAddressWrapper.setBorder(new TitledBorder("Burp collaborator address"));
-                
+                collabAddressWrapper.setBorder(new TitledBorder("Burp Collaborator address"));
+
                 //No newlines in urls
                 burpCollabTextArea.getDocument().putProperty("filterNewlines",
                 Boolean.TRUE);
@@ -287,17 +289,17 @@ public class BurpExtender implements IBurpExtender, ITab
                 //Wrapper for sending text box, label, and button
                 JPanel sendTextWrapper = new JPanel(new BorderLayout());
                 sendTextWrapper.setBorder(new TitledBorder("Data to tunnel"));
-                
+
                 //Tunnel data button and action listener
                 JButton tunnelDataButton = new JButton("Tunnel data");
                 tunnelDataButton.addActionListener(new TunnelDataButtonListener());
-                
+
                 //Send text area config and add a scroll pane
                 sendTextArea.setLineWrap(true);
                 JScrollPane sendScrollPane = new JScrollPane(sendTextArea);
                 sendTextWrapper.add(sendScrollPane, BorderLayout.CENTER);
                 sendTextWrapper.add(tunnelDataButton, BorderLayout.EAST);
-                
+
                 //Wrap the collab address and tunnel data box in one pane
                 JPanel sendPane = new JPanel(new BorderLayout());
                 sendPane.add(collabAddressWrapper, BorderLayout.NORTH);
@@ -308,11 +310,11 @@ public class BurpExtender implements IBurpExtender, ITab
                 //Receive text area config and scroll pane
                 receiveTextArea.setLineWrap(true);
                 JScrollPane receievedScrollPane = new JScrollPane(receiveTextArea);
-                
+
                 //Wrapper for received data text and label
                 JPanel receivedDataWrapper = new JPanel(new BorderLayout());
                 receivedDataWrapper.setBorder(new TitledBorder("Received data"));
-                
+
                 //Buttons and action listeners for receieve pane
                 JPanel receiveOptions = new JPanel();
                 startCollabButton.addActionListener(new StartCollabButtonListener());
@@ -322,19 +324,19 @@ public class BurpExtender implements IBurpExtender, ITab
                 receiveOptions.add(pollCollabButton, BorderLayout.CENTER);
                 receiveOptions.add(clearReceiveButton, BorderLayout.CENTER);
                 receiveOptions.add(verboseOutput, BorderLayout.CENTER);
-                
+
                 //Add buttons and scroll pane to receive pane
                 receivedDataWrapper.add(receiveOptions, BorderLayout.SOUTH);
                 receivedDataWrapper.add(receievedScrollPane, BorderLayout.CENTER);
                 mainPane.setRightComponent(receivedDataWrapper);
-                
+
                 // Customize our UI components
                 // Will this customize all sub components?
                 callbacks.customizeUiComponent(mainPane);
-                
+
                 // Add the custom tab to Burp's UI
                 callbacks.addSuiteTab(BurpExtender.this);
-                
+
             }
         });
     }
