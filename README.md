@@ -1,7 +1,7 @@
 # BurpCollaboratorDNSTunnel
 A DNS tunnel utilizing the Burp Collaborator.
 
-This extension uses the Burp Collaborator as a DNS tunnel.  One of the provided scripts will be used to exfiltrate data from a server through a DNS tunnel utilizing the Collaborator server.
+This extension sets up the Burp Collaborator as a DNS tunnel.  One of the provided scripts will be used to exfiltrate data from a server through the DNS tunnel, displaying the tunneled data in Burp Suite.
 
 ### Usage with scripts
 Multiple scripts exist for exfiltrating data from different environments.  No matter the script the setup is the same.
