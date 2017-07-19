@@ -17,7 +17,7 @@ _[S] Script_
 5) [S] Paste data or file to be tunneled when prompted
 6) [B] After tunneling is completed click "Poll now"
 
-### Usage in Burp
+### Usage between 2 Burp Suite instances
 _[R] Receiving Burp instance_
 
 _[S] Sending Burp instance_
