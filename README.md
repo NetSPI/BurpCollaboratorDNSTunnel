@@ -33,4 +33,4 @@ Check the "Verbose" box for debugging information to see any errors in sending/r
 
 ### Example
 An example is below (click to enlarge).  The example is using one Burp Suite instance, but the functionality works across two instances as well.
-<a href="https://github.com/NetSPI/BurpCollaboratorDNSTunnel/blob/master/images/demo.png?raw=true" target="_blank"><img src=".images/demo.png"/></a>
+<a href="https://github.com/NetSPI/BurpCollaboratorDNSTunnel/blob/master/images/demo.png?raw=true" target="_blank"><img src="./images/demo.png"/></a>
