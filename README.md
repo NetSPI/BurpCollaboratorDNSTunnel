@@ -5,6 +5,7 @@ This extension will create a DNS tunnel between two Burp Suite instances.  One i
 
 ### Usage with scripts
 Multiple scripts exist for exfiltrating data from different environments.  No matter the script the setup is the same.
+
 _[B] Burp Suite_
 
 _[S] Script_
