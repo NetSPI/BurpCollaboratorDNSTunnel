@@ -31,6 +31,17 @@ _[S] Sending Burp instance_
 
 Check the "Verbose" box for debugging information to see any errors in sending/receiving data.
 
+### Contributing
+It would be nice to have more compact versions of the scripts, for instances where you have to hand-type the scripts into the environment.  The basic protocol of the scripts is below:
+
+[dnsFlag].[chunk].[chunkNumber].[burpcollaborator] #eg: nspi.JZSXIU2QJEQGS4ZAMF3WK43PNVSSC.0.fdwkpqtwvgxpk4toz2yduzx75ybozd.burpcollaborator.net
+[dnsFlag] All data being tunneled needs to start with the 'nspi' subdomain, this is a flag for the tunnel to identify traffic
+[chunk] Will be a 63-character base32-encoded chunk of data
+[chunkNumber] Is the index of the current chunk in the overall tunneled data
+[burpcollaborator] Is the full address of the Burp Collaborator server.  This is found in step 2 of Usage With Scripts.
+
+[dnsFlag].[amountFlag].[totalChunkCount].[burpcollaborator] #eg: nspi.amount.1.fdwkpqtwvgxpk4toz2yduzx75ybozd.burpcollaborator.net
+
 ### Example
 An example is below (click to enlarge).  The example is using one Burp Suite instance, but the functionality works across two instances as well.
 <a href="https://github.com/NetSPI/BurpCollaboratorDNSTunnel/blob/master/images/demo.png?raw=true" target="_blank"><img src="./images/demo.png"/></a>
