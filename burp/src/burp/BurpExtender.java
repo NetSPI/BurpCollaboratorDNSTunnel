@@ -45,7 +45,7 @@ public class BurpExtender implements IBurpExtender, ITab
     private final JButton pollCollabButton = new JButton("Poll now");
     private final JButton clearReceiveButton = new JButton("Clear");
 
-    //Log to the receiveTextArea is verbosity is set to true
+    //Log to the receiveTextArea if verbosity is set to true
     class DNSLogger {
         public void log(String text) {
             if (verboseOutput.isSelected()) {
