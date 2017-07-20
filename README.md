@@ -14,7 +14,7 @@ _[S] Script_
 2) [B] Copy the printed location of the Burp Collaborator server
 3) [S] Run the script
 4) [S] Enter the Burp Collaborator address from (2) when prompted
-5) [S] Paste data or file to be tunneled when prompted
+5) [S] Paste file name to be tunneled when prompted
 6) [B] After tunneling is completed click "Poll now"
 
 ### Usage between 2 Burp Suite instances
