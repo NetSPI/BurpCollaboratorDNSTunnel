@@ -2,7 +2,7 @@
 dnsFlag="nspi"
 amountFlag="amount"
 
-echo -n "Collaborator domain: "
+echo -n "Burp Collaborator address: "
 read collabDomain
 
 #Read in data to exfiltrate

