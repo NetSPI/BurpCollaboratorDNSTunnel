@@ -18,10 +18,7 @@ import java.util.Map;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 //Could make a ton of class files pulling this out.
 //In the future if more functionality gets added that should be done,
