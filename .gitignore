@@ -1,1 +1,6 @@
 data.txt
+nbproject/private/
+build/
+nbbuild/
+nbdist/
+.nb-gradle/
