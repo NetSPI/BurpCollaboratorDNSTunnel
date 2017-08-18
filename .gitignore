@@ -1,6 +1,6 @@
 data.txt
-nbproject/private/
-build/
-nbbuild/
-nbdist/
-.nb-gradle/
+burp/nbproject/private/
+burp/build/
+burp/nbbuild/
+burp/nbdist/
+burp/.nb-gradle/
