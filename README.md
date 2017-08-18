@@ -36,20 +36,20 @@ It would be nice to have more compact versions of the scripts for instances wher
 
 #### 1) Tunneling Data
 ```
-[dnsFlag].[chunk].[chunkNumber].[burpcollaborator] #eg: nspi.JZSXIU2QJEQGS4ZAMF3WK43PNVSSC.0.fdwkpqtwvgxpk4toz2yduzx75ybozd.burpcollaborator.net
+[dnsFlag].[chunk].[chunkNumber].[burpcollaborator] #eg: nspi.JZSXIU2QJEQGS4ZAMF3WK43PNVSSC.0.fdwkpqtwvgxpk4toz2yduzx75ybozd.private-burp-collaborator.net
 [dnsFlag] All data being tunneled needs to start with the 'nspi' subdomain, this is a flag for the tunnel to identify traffic
 [chunk] Will be a 63-character base32-encoded chunk of data, removing any padding '='
 [chunkNumber] Is the index of the current chunk in the overall tunneled data
-[burpcollaborator] Is the full address of the Burp Collaborator server
+[burpcollaborator] Is the full address of the private Burp Collaborator server
 ```
 
 #### 2) Notifying size of data sent
 ```
-[dnsFlag].[amountFlag].[totalChunkCount].[burpcollaborator] #eg: nspi.amount.1.fdwkpqtwvgxpk4toz2yduzx75ybozd.burpcollaborator.net
+[dnsFlag].[amountFlag].[totalChunkCount].[burpcollaborator] #eg: nspi.amount.1.fdwkpqtwvgxpk4toz2yduzx75ybozd.private-burp-collaborator.net
 [dnsFlag] All data being tunneled needs to start with the 'nspi' subdomain, this is a flag for the tunnel to identify traffic
 [amountFlag] This subdomain's value will be 'amount' so the tunnel can identify this is as the request declaring the amount of data sent
 [totalChunkCount] The total number of chunks sent through the tunnel, excluding this request
-[burpcollaborator] Is the full address of the Burp Collaborator server
+[burpcollaborator] Is the full address of the private Burp Collaborator server
 ```
 
 ### Example
